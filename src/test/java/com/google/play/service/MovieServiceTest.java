@@ -3,7 +3,12 @@ package com.google.play.service;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -47,6 +52,27 @@ public class MovieServiceTest {
 	}
 	
 	@Test
+	public void shouldRentMovieWeekend() throws Exception {
+		//Arrange
+			Calendar calendar=Calendar.getInstance();
+			calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+			DateFormat dateFormat=new SimpleDateFormat("EEE dd/MM/yyyy");
+		//Act
+			System.out.println(dateFormat.format(calendar.getTime()));
+			
+			boolean isWeekend=dateFormat.format(calendar.getTime()).contains("Sat");
+			
+			//Se salta la prueba si es false y notifica que se la salto
+			Assume.assumeFalse(isWeekend);
+		//Assert
+			
+			int precio=5;
+			Integer precio2=10;
+			
+			assertEquals(precio, precio2.intValue());
+	}
+	
+	@Test
 	public void noShouldRentMovie() throws Exception {
 		//Arrange
 		User user=new User("Diego");
@@ -87,7 +113,20 @@ public class MovieServiceTest {
 	public void noShouldRentMovie3()throws Exception {
 		//Arrange
 		User user=new User("Diego");
-		Movie movie=new Movie("matrix", 1);
+		Movie movie=new Movie("matrix", 0);
+		
+		//Act
+		
+		MovieService movieService=new MovieService();
+		movieService.rentMovie(user, movie);
+						
+	}
+	
+	@Test()
+	public void shouldRentMovie()throws Exception {
+		//Arrange
+		User user=new User("Diego");
+		Movie movie=new Movie("Matrix", 1);
 		
 		//Act
 		
