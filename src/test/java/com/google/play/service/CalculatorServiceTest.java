@@ -7,26 +7,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
-public class CalculatorServiceTest {
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-	
-	
+public class CalculatorServiceTest {	
 
 	@Test
 	public void sumarDosNumeros() {
@@ -43,6 +27,30 @@ public class CalculatorServiceTest {
 		
 		//Assert
 		assertEquals(esperado, resultado,0.1);
+	}
+	
+	@Test
+	public void sumarDosNumerosMatcher() {
+		CalculadoraService calculadoraService=Mockito.mock(CalculadoraService.class);
+		
+		Mockito.when(calculadoraService.suma(Mockito.anyDouble(), Mockito.anyDouble()))
+		.thenReturn(20.0);
+		
+		System.out.println(calculadoraService.suma(4, 2));		
+	}
+	
+	@Test
+	public void sumarDosNumerosMatcher2() {
+		CalculadoraService calculadoraService=Mockito.mock(CalculadoraService.class);
+		ArgumentCaptor<Double> captor=ArgumentCaptor.forClass(Double.class);
+		
+		Mockito.when(calculadoraService.suma(captor.capture(), captor.capture()))
+		.thenReturn(20.0);
+		
+		calculadoraService.suma(4, 2);
+		calculadoraService.suma(8, 78);
+		
+		System.out.println(captor.getAllValues());		
 	}
 
 }

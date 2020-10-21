@@ -3,6 +3,8 @@ package com.google.play.entity;
 public class User {
 
 	private String name;
+	private String typeDcoument;
+	private Integer numDocument;
 
 	public String getName() {
 		return name;
@@ -15,6 +17,22 @@ public class User {
 	public User(String name) {
 		super();
 		this.name = name;
+	}
+	
+	public String getTypeDcoument() {
+		return typeDcoument;
+	}
+
+	public void setTypeDcoument(String typeDcoument) {
+		this.typeDcoument = typeDcoument;
+	}
+
+	public Integer getNumDocument() {
+		return numDocument;
+	}
+
+	public void setNumDocument(Integer numDocument) {
+		this.numDocument = numDocument;
 	}
 
 	@Override

@@ -13,44 +13,47 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.google.play.collaborator.CentralRisk;
 import com.google.play.dao.BillDAO;
 import com.google.play.entity.Bill;
+import com.google.play.entity.BillBuilder;
 import com.google.play.entity.Movie;
 import com.google.play.entity.User;
 
-public class MovieServiceTest {
+public class MovieServiceAnnotacionesTest {
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
 	private List<Movie> movies;
-	MovieService movieService=null;
 	
-	private CentralRisk centralRisk=null;
-	private BillDAO billDAO=null;
+	@InjectMocks
+	MovieService movieService;
+	
+	@Mock
+	private CentralRisk centralRisk;
+	@Mock
+	private BillDAO billDAO;
+	@Mock
 	private UserService userService;
+	@Mock
 	private EmailService emailService;
+	
+	@Mock
+	private BillService billService; 
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		movies=new ArrayList<>();
 		movieService=new MovieService();
-		
-		billDAO= Mockito.mock(BillDAO.class);
-		movieService.setBillDao(billDAO);
-		
-		centralRisk=Mockito.mock(CentralRisk.class);
-		movieService.setCentralRisk(centralRisk);
-		
-		userService=Mockito.mock(UserService.class);
-		movieService.setUserService(userService);
-		
-		emailService=Mockito.mock(EmailService.class);
-		movieService.setEmailService(emailService);
+		MockitoAnnotations.initMocks(this);
 		
 	}
 	
@@ -96,6 +99,27 @@ public class MovieServiceTest {
 		
 		Mockito.when(centralRisk.getRiskByCustomer(user.getTypeDcoument(), user.getNumDocument()))
 		.thenReturn(true);
+		
+		exception.expect(Exception.class);
+		exception.expectMessage("High Risk Customer");
+		
+		//Act
+		bill=movieService.rentMovie(user, movies);		
+	}
+	
+	@Test
+	public void noShouldRentMovieHighRiskCustomer2()throws Exception {
+		
+		//Arrange
+		double expected =20.0;
+		User user=getUser().highRisk().now();
+		//User noRiskUser=getUser().now();
+		Movie movie=getMovie().now();
+		movies.add(movie);
+		Bill bill;
+		
+		Mockito.when(centralRisk.getRiskByCustomer(user.getTypeDcoument(), user.getNumDocument()))
+		.thenThrow(new Exception("High Risk Customer"));
 		
 		exception.expect(Exception.class);
 		exception.expectMessage("High Risk Customer");
@@ -207,6 +231,30 @@ public class MovieServiceTest {
 		assertEquals(expected, bill.getNetPrice(),0.1);
 		
 		
+	}
+	
+	@Test
+	public void shouldRefoundMoney() {
+		
+		//Arrange
+		double expected =20.0;
+		Bill bill=BillBuilder.getBill().now();
+		Bill billRefound=BillBuilder.getBill().otherNumBill(919191.0).now();
+		
+		
+		//Act
+		movieService.refoundMoney(bill);
+		
+		//Assert
+		ArgumentCaptor<Bill> captor=ArgumentCaptor.forClass(Bill.class);
+		Mockito.verify(billService).refoundMoney(captor.capture());
+		
+		Bill billRefoundCapture=captor.getValue();
+		
+		assertEquals(bill.getNetPrice(), billRefoundCapture.getNetPrice(),0.0);
+		
+		
+			
 	}
 
 }

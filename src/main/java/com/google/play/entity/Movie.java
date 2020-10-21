@@ -4,17 +4,34 @@ public class Movie {
 	
 	private String name;
 	private Integer stock;
+	private Double netPrice;
 	
 
 	public Movie() {
 		super();
 	}
 
-
+	public Movie(String name, Integer stock, Double netPrice) {
+		super();
+		this.name = name;
+		this.stock = stock;
+		this.netPrice = netPrice;
+	}
+	
 	public Movie(String name, Integer stock) {
 		super();
 		this.name = name;
 		this.stock = stock;
+		this.netPrice = 0.0;
+	}
+
+	public Double getNetPrice() {
+		return netPrice;
+	}
+
+
+	public void setNetPrice(Double netPrice) {
+		this.netPrice = netPrice;
 	}
 
 
@@ -37,7 +54,6 @@ public class Movie {
 		this.stock = stock;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -45,7 +61,6 @@ public class Movie {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -63,6 +78,5 @@ public class Movie {
 			return false;
 		return true;
 	}
-
 	
 }
