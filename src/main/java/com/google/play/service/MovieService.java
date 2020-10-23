@@ -11,7 +11,7 @@ import com.google.play.entity.User;
 
 public class MovieService {
 	
-	private static List<Movie> movies=new ArrayList<>();
+	private static List<Movie> moviesDB=new ArrayList<>();
 	
 	private BillDAO billDao;
 	private CentralRisk centralRisk;	
@@ -44,10 +44,10 @@ public class MovieService {
 
 	static {
 		
-		movies.add(new Movie("Matrix", 10));
-		movies.add(new Movie("Matrix Reload", 0));
-		movies.add(new Movie("Matrix Revolution", 1));
-		movies.add(new Movie("Terminator", 1));
+		moviesDB.add(new Movie("Matrix", 10));
+		moviesDB.add(new Movie("Matrix Reload", 0));
+		moviesDB.add(new Movie("Matrix Revolution", 1));
+		moviesDB.add(new Movie("Terminator", 1));
 		
 	}
 	
@@ -65,7 +65,7 @@ public class MovieService {
 		}
 		
 		for (Movie movie : movies) {
-			if(movies.contains(movie)==false) {
+			if(moviesDB.contains(movie)==false) {
 				throw new Exception("Movie no exists");
 			}
 			if(movie.getStock()==0) {
