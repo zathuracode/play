@@ -4,6 +4,7 @@ import static  com.google.play.entity.MovieBuilder.getMovie;
 import static  com.google.play.entity.MovieBuilder.noStock;
 import static  com.google.play.entity.UserBuilder.getUser;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import com.google.play.collaborator.CentralRisk;
@@ -132,8 +134,18 @@ public class MovieServiceTest {
 		//Act
 		bill=movieService.rentMovie(user, movies);
 		
+		
 		//Assert
-		assertEquals(expected, bill.getNetPrice(),0.1);
+		
+		//Inicio Para verificar que si se llamo
+			ArgumentCaptor<Bill> captor=ArgumentCaptor.forClass(Bill.class);		
+			verify(billDAO).save(captor.capture());
+			Bill billCapture=captor.getValue();
+		//Fin Para verificar que si se llamo
+		
+		
+		assertEquals(expected, billCapture.getNetPrice(),0.1);
+		
 		
 		
 	}
