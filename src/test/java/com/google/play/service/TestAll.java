@@ -1,7 +1,5 @@
 package com.google.play.service;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +26,7 @@ public class TestAll {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		
 	}
 
 }

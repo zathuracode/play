@@ -1,25 +1,17 @@
 package com.google.play.service;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
-import org.junit.rules.ExpectedException;
 
-import com.google.play.entity.Movie;
-import com.google.play.entity.User;
+
 
 
 
 public class BuenasPracticasTest {
+	
+	@Test
+	public void test() {
+		
+	}
 //	
 //	@Rule
 //	public ErrorCollector error = new ErrorCollector();

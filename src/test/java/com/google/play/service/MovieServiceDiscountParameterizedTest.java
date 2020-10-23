@@ -1,8 +1,8 @@
 package com.google.play.service;
 
 import static com.google.play.entity.MovieBuilder.getMovie;
+import static com.google.play.entity.UserBuilder.getUser;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +14,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
+import com.google.play.collaborator.CentralRisk;
+import com.google.play.dao.BillDAO;
 import com.google.play.entity.Bill;
 import com.google.play.entity.Movie;
 import com.google.play.entity.User;
@@ -22,17 +25,41 @@ import com.google.play.entity.User;
 @RunWith(Parameterized.class)
 public class MovieServiceDiscountParameterizedTest {
 
-@Parameter(value = 0)	
-public List<Movie> 	movies	;
+	@Parameter(value = 0)	
+	public List<Movie> 	movies	;
+	
+	@Parameter(value = 1)
+	public double 		expected;
+	
+	@Parameter(value = 2)
+	public String 		nameTest;
 
-@Parameter(value = 1)
-public double 		expected;
 
-@Parameter(value = 2)
-public String 		nameTest;
-
-
-public MovieService 	movieService = new MovieService();
+	MovieService movieService=null;
+	
+	private CentralRisk centralRisk=null;
+	private BillDAO billDAO=null;
+	private UserService userService;
+	private EmailService emailService;
+	
+	@Before
+	public void setUp() throws Exception {		
+		
+		movieService=new MovieService();
+		
+		billDAO= Mockito.mock(BillDAO.class);
+		movieService.setBillDao(billDAO);
+		
+		centralRisk=Mockito.mock(CentralRisk.class);
+		movieService.setCentralRisk(centralRisk);
+		
+		userService=Mockito.mock(UserService.class);
+		movieService.setUserService(userService);
+		
+		emailService=Mockito.mock(EmailService.class);
+		movieService.setEmailService(emailService);
+		
+	}
 
 
 	private static Movie	movie1Interestellar 	= getMovie().now();
@@ -56,7 +83,7 @@ public MovieService 	movieService = new MovieService();
 	@Test
 	public void shouldDiscountPercentMore1Movies() throws Exception {
 		//Arrange 
-		User 	user 					= new User("Dilanino");
+		User 	user 					= getUser().now();
 		Bill	bill;
 		
 		//Act
