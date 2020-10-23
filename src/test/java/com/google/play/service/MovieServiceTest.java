@@ -208,5 +208,88 @@ public class MovieServiceTest {
 		
 		
 	}
+	
+	
+	@Test(expected = Exception.class)
+	public void userNull()throws Exception {
+		
+		//Arrange
+		double expected =20.0;
+		User user=getUser().now();
+		Movie movieOne=getMovie().now();
+		Movie movieTwo=getMovie().now();
+		Movie movieThree=getMovie().now();
+		Movie movieFour=getMovie().now();
+		
+		movies.add(movieOne);
+		movies.add(movieTwo);
+		movies.add(movieThree);
+		movies.add(movieFour);
+		
+		Bill bill;
+		
+		//Act
+		bill=movieService.rentMovie(null, movies);
+		
+	}
+	
+	@Test(expected = Exception.class)
+	public void movieNull()throws Exception {
+		
+		//Arrange
+		double expected =20.0;
+		User user=getUser().now();
+		Movie movieOne=getMovie().now();
+		Movie movieTwo=getMovie().now();
+		Movie movieThree=getMovie().now();
+		Movie movieFour=getMovie().now();
+		
+		movies.add(movieOne);
+		movies.add(movieTwo);
+		movies.add(movieThree);
+		movies.add(movieFour);
+		
+		Bill bill;
+		
+		//Act
+		bill=movieService.rentMovie(user, null);
+		
+	}
+	
+	@Test(expected = Exception.class)
+	public void movieIsEmpty()throws Exception {
+		
+		//Arrange
+		double expected =20.0;
+		User user=getUser().now();		
+		Bill bill;
+		
+		//Act
+		bill=movieService.rentMovie(user, movies);
+		
+	}
+	
+	@Test(expected = Exception.class)
+	public void movieDontExister()throws Exception {
+		
+		//Arrange
+		double expected =20.0;
+		User user=getUser().now();
+		Movie movieOne=new Movie("Vay vaya vaya", 10, 10.0);
+		Movie movieTwo=getMovie().now();
+		Movie movieThree=getMovie().now();
+		Movie movieFour=getMovie().now();
+		
+		movies.add(movieOne);
+		movies.add(movieTwo);
+		movies.add(movieThree);
+		movies.add(movieFour);
+		
+		Bill bill;
+		
+		//Act
+		bill=movieService.rentMovie(user, null);
+		
+	}
 
 }
