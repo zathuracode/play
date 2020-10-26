@@ -1,23 +1,17 @@
 pipeline {
     agent any
-    tools { 
-        maven 'Maven 3.3.9' 
-        jdk 'jdk8' 
-    }
     stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                ''' 
+        stage ('Build Backend') {
+            
+            environment {
+                mvnHOME = tool 'MAVEN_HOME'
             }
+
+            steps {
+				sh  "${mvnHOME}/bin/mvn clean package -DskipTests=true"	
+            }
+            
         }
 
-        stage ('Build') {
-            steps {
-                echo 'This is a minimal pipeline.'
-            }
-        }
     }
 }
